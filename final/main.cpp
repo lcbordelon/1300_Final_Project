@@ -22,6 +22,8 @@ PLEASE FILL OUT THIS SECTION PRIOR TO SUBMISSION
 #include <fstream>
 #include <cmath>
 #include <string>
+#include <windows.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -244,28 +246,38 @@ bool write_image(string filename, const vector<vector<Pixel>> &image)
 // YOUR FUNCTION DEFINITIONS HERE
 //
 
+//PROCESS 1 - ADDS VIGNETTE
 vector<vector<Pixel>> process_1(const vector<vector<Pixel>> &image)
 {
-    cout << "in process_1" << endl;
-    //     // Get the number of rows/columns from the input 2D vector (remember: num_rows is height, num_columns is width)
     int num_rows = image.size();
-    int num_cols = image[0].size();
-    cout << "rows: " << num_rows << "columns: " << num_cols << endl;
+    int num_columns = image[0].size();
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
 
-    //     // Define a new 2D vector the same size as the input 2D vector
+    for (int row = 0; row < num_rows; row++)
+    {
+        for (int col = 0; col < num_columns; col++)
+        {
+            int red_color = image[row][col].red;
+            int green_color = image[row][col].green;
+            int blue_color = image[row][col].blue;
 
-    //     // For each of the rows in the input 2D vector
+            int distance = sqrt(pow((col - num_columns / 2), 2) + pow((row - num_rows / 2), 2));
+            double scaling_factor = (num_rows - distance) / double(num_rows);
+            cout << "num rows " << num_rows << endl;
+            cout << "distance " << distance << endl;
+            cout << "scaling Factor " << scaling_factor << endl;
 
-    //     // For each of the columns in the input 2D vector
+            int new_red = red_color * scaling_factor;
+            int new_green = green_color * scaling_factor;
+            int new_blue = blue_color * scaling_factor;
 
-    //     // Get the color values for the pixel located at this row and column in the input 2D vector
+            new_image[row][col].red = new_red;
+            new_image[row][col].green = new_green;
+            new_image[row][col].blue = new_blue;
+        }
+    }
 
-    //     // Perform the operation on the color values (refer to Runestone for this)
-
-    //     // Save the new color values to the corresponding pixel located at this row and column in the new 2D vector
-
-    //     // Return the new 2D vector after the nested for loop is complete
-    return image;
+    return new_image;
 }
 
 int main()
@@ -279,6 +291,7 @@ int main()
     cout << "into the main function.." << endl;
     vector<vector<Pixel>> image = read_image("sample.bmp");
     vector<vector<Pixel>> new_image = process_1(image);
+    bool success = write_image("new_sample.bmp", new_image);
 
     // Output modified red and blue pixel image, results
     // cout << "The dimensions of the image are: " << image.rows << " rows by " << image.cols << " columns." << endl;
