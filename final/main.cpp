@@ -21,6 +21,8 @@ PLEASE FILL OUT THIS SECTION PRIOR TO SUBMISSION
 #include <vector>
 #include <fstream>
 #include <cmath>
+#include <string>
+
 using namespace std;
 
 //***************************************************************************************************//
@@ -64,12 +66,15 @@ int get_int(fstream &stream, int offset, int bytes)
  */
 vector<vector<Pixel>> read_image(string filename)
 {
+    cout << "in read_image function, filename:" << filename << endl;
+
     // Open the binary file
     fstream stream;
     stream.open(filename, ios::in | ios::binary);
 
     // Get the image properties
     int file_size = get_int(stream, 2, 4);
+    // cout << "file size" << file_size;
     int start = get_int(stream, 10, 4);
     int width = get_int(stream, 18, 4);
     int height = get_int(stream, 22, 4);
@@ -86,6 +91,7 @@ vector<vector<Pixel>> read_image(string filename)
     // Return empty vector if this is not a valid image
     if (file_size != start + (scanline_size + padding) * height)
     {
+        cout << "we're getting here" << endl;
         return {};
     }
 
@@ -122,6 +128,7 @@ vector<vector<Pixel>> read_image(string filename)
 
     // Close the stream and return the image vector
     stream.close();
+
     return image;
 }
 
@@ -237,12 +244,48 @@ bool write_image(string filename, const vector<vector<Pixel>> &image)
 // YOUR FUNCTION DEFINITIONS HERE
 //
 
+vector<vector<Pixel>> process_1(const vector<vector<Pixel>> &image)
+{
+    cout << "in process_1" << endl;
+    //     // Get the number of rows/columns from the input 2D vector (remember: num_rows is height, num_columns is width)
+    int num_rows = image.size();
+    int num_cols = image[0].size();
+    cout << "rows: " << num_rows << "columns: " << num_cols << endl;
+
+    //     // Define a new 2D vector the same size as the input 2D vector
+
+    //     // For each of the rows in the input 2D vector
+
+    //     // For each of the columns in the input 2D vector
+
+    //     // Get the color values for the pixel located at this row and column in the input 2D vector
+
+    //     // Perform the operation on the color values (refer to Runestone for this)
+
+    //     // Save the new color values to the corresponding pixel located at this row and column in the new 2D vector
+
+    //     // Return the new 2D vector after the nested for loop is complete
+    return image;
+}
+
 int main()
 {
 
     //
     // YOUR CODE HERE
     //
+
+    // Read in BMP image file into a 2D vector (using read_image function)
+    cout << "into the main function.." << endl;
+    vector<vector<Pixel>> image = read_image("sample.bmp");
+    vector<vector<Pixel>> new_image = process_1(image);
+
+    // Output modified red and blue pixel image, results
+    // cout << "The dimensions of the image are: " << image.rows << " rows by " << image.cols << " columns." << endl;
+
+    // Call process_1 function using the input 2D vector and save the result returned to a new 2D vector
+
+    // Write the resulting 2D vector to a new BMP image file (using write_image function)
 
     return 0;
 }
