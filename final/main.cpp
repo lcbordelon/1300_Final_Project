@@ -411,6 +411,50 @@ vector<vector<Pixel>> process_5(const vector<vector<Pixel>> &image, int number)
     return image;
 }
 
+//PROCESS 6 - ENLARGE
+
+//PROCESS 7 - HIGH CONTRAST
+vector<vector<Pixel>> process_7(const vector<vector<Pixel>> &image)
+{
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for (int row = 0; row < num_rows; row++)
+    {
+        for (int col = 0; col < num_columns; col++)
+        {
+            int red_color = image[row][col].red;
+            int green_color = image[row][col].green;
+            int blue_color = image[row][col].blue;
+
+            int new_red = 0;
+            int new_green = 0;
+            int new_blue = 0;
+
+            int gray_value = (red_color + green_color + blue_color) / 3;
+
+            if (gray_value >= 255 / 2)
+            {
+                new_red = 255;
+                new_green = 255;
+                new_blue = 255;
+            }
+            else
+            {
+                new_red = 0;
+                new_green = 0;
+                new_blue = 0;
+            }
+
+            new_image[row][col].red = new_red;
+            new_image[row][col].green = new_green;
+            new_image[row][col].blue = new_blue;
+        }
+    }
+    return new_image;
+}
+
 int main()
 {
 
@@ -480,6 +524,12 @@ int main()
 
         vector<vector<Pixel>> image = read_image(file_name);
         vector<vector<Pixel>> new_image = process_5(image, number);
+        bool success = write_image("new_sample.bmp", new_image);
+    }
+    else if (menu_choice == 7)
+    {
+        vector<vector<Pixel>> image = read_image(file_name);
+        vector<vector<Pixel>> new_image = process_7(image);
         bool success = write_image("new_sample.bmp", new_image);
     }
 
