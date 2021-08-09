@@ -536,6 +536,80 @@ vector<vector<Pixel>> process_9(const vector<vector<Pixel>> &image, double scali
     return new_image;
 }
 
+//PROCESS 10 - CONVERT COLORS
+vector<vector<Pixel>> process_10(const vector<vector<Pixel>> &image)
+{
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for (int row = 0; row < num_rows; row++)
+    {
+        for (int col = 0; col < num_columns; col++)
+        {
+            int red_color = image[row][col].red;
+            int green_color = image[row][col].green;
+            int blue_color = image[row][col].blue;
+
+            int new_red = 0;
+            int new_green = 0;
+            int new_blue = 0;
+
+            int max_color = 0;
+            //determine which color is the max color
+            if (red_color > green_color && red_color > blue_color)
+            {
+                max_color = red_color;
+            }
+            else if (green_color > red_color && green_color > blue_color)
+            {
+                max_color = green_color;
+            }
+            else
+            {
+                max_color = blue_color;
+            }
+
+            //set colors based on max color
+            if ((red_color + green_color + blue_color) >= 550)
+            {
+                new_red = 255;
+                new_green = 255;
+                new_blue = 255;
+            }
+            else if ((red_color + green_color + blue_color) <= 150)
+            {
+                new_red = 0;
+                new_green = 0;
+                new_blue = 0;
+            }
+            else if (max_color == red_color)
+            {
+                new_red = 255;
+                new_green = 0;
+                new_blue = 0;
+            }
+            else if (max_color == green_color)
+            {
+                new_red = 0;
+                new_green = 255;
+                new_blue = 0;
+            }
+            else
+            {
+                new_red = 0;
+                new_green = 0;
+                new_blue = 255;
+            }
+
+            new_image[row][col].red = new_red;
+            new_image[row][col].green = new_green;
+            new_image[row][col].blue = new_blue;
+        }
+    }
+    return new_image;
+}
+
 int main()
 {
 
@@ -653,6 +727,12 @@ int main()
 
         vector<vector<Pixel>> image = read_image(file_name);
         vector<vector<Pixel>> new_image = process_9(image, scaling_factor);
+        bool success = write_image("new_sample.bmp", new_image);
+    }
+    else if (menu_choice == 10)
+    {
+        vector<vector<Pixel>> image = read_image(file_name);
+        vector<vector<Pixel>> new_image = process_10(image);
         bool success = write_image("new_sample.bmp", new_image);
     }
 
