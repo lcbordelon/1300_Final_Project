@@ -326,6 +326,34 @@ vector<vector<Pixel>> process_2(const vector<vector<Pixel>> &image, double scali
     return new_image;
 }
 
+//PROCESS 3 - GRAYSCALE
+vector<vector<Pixel>> process_3(const vector<vector<Pixel>> &image)
+{
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for (int row = 0; row < num_rows; row++)
+    {
+        for (int col = 0; col < num_columns; col++)
+        {
+            int red_color = image[row][col].red;
+            int green_color = image[row][col].green;
+            int blue_color = image[row][col].blue;
+
+            int gray_value = (red_color + green_color + blue_color) / 3;
+            int new_red = gray_value;
+            int new_green = gray_value;
+            int new_blue = gray_value;
+
+            new_image[row][col].red = new_red;
+            new_image[row][col].green = new_green;
+            new_image[row][col].blue = new_blue;
+        }
+    }
+    return new_image;
+}
+
 int main()
 {
 
@@ -369,6 +397,12 @@ int main()
     {
         vector<vector<Pixel>> image = read_image(file_name);
         vector<vector<Pixel>> new_image = process_2(image, 0.3);
+        bool success = write_image("new_sample.bmp", new_image);
+    }
+    else if (menu_choice == 3)
+    {
+        vector<vector<Pixel>> image = read_image(file_name);
+        vector<vector<Pixel>> new_image = process_3(image);
         bool success = write_image("new_sample.bmp", new_image);
     }
 
