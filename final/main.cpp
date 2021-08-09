@@ -1,24 +1,27 @@
-/*
-main.cpp
-CSPB 1300 Image Processing Application
+// /*
+// main.cpp
+// CSPB 1300 Image Processing Application
 
-PLEASE FILL OUT THIS SECTION PRIOR TO SUBMISSION
+// PLEASE FILL OUT THIS SECTION PRIOR TO SUBMISSION
 
-- Your name:
-    Lindsay Bordelon
+// - Your name:
+//     Lindsay Bordelon
 
-- All project requirements fully met? (YES or NO):
-    <ANSWER>
+// - All project requirements fully met? (YES or NO):
+//     <ANSWER>
 
-- If no, please explain what you could not get to work:
-    <ANSWER>
+// - If no, please explain what you could not get to work:
+//     <ANSWER>
 
-- Did you do any optional enhancements? If so, please explain:
-    No, but below is a list of things I learned/cemented during this project:
-    -Why variable type matters (string to int, int to double, etc)
-    -I need to compile the code after every change and then run the code
+// - Did you do any optional enhancements? If so, please explain:
+//     No, but below is a list of things I learned/cemented during this project:
+//     -Why variable type matters (string to int, int to double, etc)
+//     -I need to compile the code after every change and then run the code
 
-*/
+// GitHub Repo
+// https://github.com/lcbordelon/1300_Final_Project
+
+// */
 
 #include <iostream>
 #include <vector>
@@ -354,6 +357,32 @@ vector<vector<Pixel>> process_3(const vector<vector<Pixel>> &image)
     return new_image;
 }
 
+//PROCESS 4 - ROTATE 90 DEGREES
+vector<vector<Pixel>> process_4(const vector<vector<Pixel>> &image)
+{
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+    vector<vector<Pixel>> process_4(const vector<vector<Pixel>> &image);
+    {
+
+        vector<vector<Pixel>> new_image(num_columns, vector<Pixel>(num_rows));
+        for (int row = 0; row < num_rows; row++)
+        {
+            for (int col = 0; col < num_columns; col++)
+            {
+                int blue_color = image[row][col].blue;
+                int red_color = image[row][col].red;
+                int green_color = image[row][col].green;
+
+                new_image[col][((num_rows - 1) - row)].blue = blue_color;
+                new_image[col][((num_rows - 1) - row)].red = red_color;
+                new_image[col][((num_rows - 1) - row)].green = green_color;
+            }
+        }
+        return new_image;
+    }
+}
+
 int main()
 {
 
@@ -403,6 +432,12 @@ int main()
     {
         vector<vector<Pixel>> image = read_image(file_name);
         vector<vector<Pixel>> new_image = process_3(image);
+        bool success = write_image("new_sample.bmp", new_image);
+    }
+    else if (menu_choice == 4)
+    {
+        vector<vector<Pixel>> image = read_image(file_name);
+        vector<vector<Pixel>> new_image = process_4(image);
         bool success = write_image("new_sample.bmp", new_image);
     }
 
