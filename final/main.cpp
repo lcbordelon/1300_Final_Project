@@ -22,8 +22,6 @@ PLEASE FILL OUT THIS SECTION PRIOR TO SUBMISSION
 #include <fstream>
 #include <cmath>
 #include <string>
-#include <windows.h>
-#include <stdio.h>
 
 using namespace std;
 
@@ -263,9 +261,9 @@ vector<vector<Pixel>> process_1(const vector<vector<Pixel>> &image)
 
             int distance = sqrt(pow((col - num_columns / 2), 2) + pow((row - num_rows / 2), 2));
             double scaling_factor = (num_rows - distance) / double(num_rows);
-            cout << "num rows " << num_rows << endl;
-            cout << "distance " << distance << endl;
-            cout << "scaling Factor " << scaling_factor << endl;
+            // cout << "num rows " << num_rows << endl;
+            // cout << "distance " << distance << endl;
+            // cout << "scaling Factor " << scaling_factor << endl;
 
             int new_red = red_color * scaling_factor;
             int new_green = green_color * scaling_factor;
@@ -286,6 +284,11 @@ int main()
     //
     // YOUR CODE HERE
     //
+    cout << "CSPB 1300 Image Processing Application" << endl;
+    cout << "Enter input BMP filename" << endl;
+    string file_name;
+    cin >> file_name;
+    cout << file_name << endl;
 
     // Read in BMP image file into a 2D vector (using read_image function)
     cout << "into the main function.." << endl;
