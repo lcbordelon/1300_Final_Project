@@ -509,6 +509,33 @@ vector<vector<Pixel>> process_8(const vector<vector<Pixel>> &image, double scali
     return new_image;
 }
 
+//PROCESS 9 - DARKEN IMAGE
+vector<vector<Pixel>> process_9(const vector<vector<Pixel>> &image, double scaling_factor)
+{
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for (int row = 0; row < num_rows; row++)
+    {
+        for (int col = 0; col < num_columns; col++)
+        {
+            int red_color = image[row][col].red;
+            int green_color = image[row][col].green;
+            int blue_color = image[row][col].blue;
+
+            int new_red = red_color * scaling_factor;
+            int new_green = green_color * scaling_factor;
+            int new_blue = blue_color * scaling_factor;
+
+            new_image[row][col].red = new_red;
+            new_image[row][col].green = new_green;
+            new_image[row][col].blue = new_blue;
+        }
+    }
+    return new_image;
+}
+
 int main()
 {
 
@@ -612,6 +639,20 @@ int main()
 
         vector<vector<Pixel>> image = read_image(file_name);
         vector<vector<Pixel>> new_image = process_8(image, scaling_factor);
+        bool success = write_image("new_sample.bmp", new_image);
+    }
+    else if (menu_choice == 9)
+    {
+        cout << "How much would you like to darken the photo?" << endl;
+        string darken_num;
+        cin >> darken_num;
+        stringstream geek(darken_num);
+        double scaling_factor = 0;
+        geek >> scaling_factor;
+        cout << "Scaling Factor: " << scaling_factor << endl;
+
+        vector<vector<Pixel>> image = read_image(file_name);
+        vector<vector<Pixel>> new_image = process_9(image, scaling_factor);
         bool success = write_image("new_sample.bmp", new_image);
     }
 
