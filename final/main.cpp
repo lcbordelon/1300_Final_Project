@@ -412,6 +412,31 @@ vector<vector<Pixel>> process_5(const vector<vector<Pixel>> &image, int number)
 }
 
 //PROCESS 6 - ENLARGE
+vector<vector<Pixel>> process_6(const vector<vector<Pixel>> &image, int scale)
+{
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+    for (int row = 0; row < num_rows; row++)
+    {
+        for (int col = 0; col < num_columns; col++)
+        {
+            int red_color = image[row][col].red;
+            int green_color = image[row][col].green;
+            int blue_color = image[row][col].blue;
+
+            int new_red = image[row * scale][col * scale].red;
+            int new_green = image[row * scale][col * scale].red;
+            int new_blue = image[row * scale][col * scale].red;
+
+            new_image[row][col].red = new_red;
+            new_image[row][col].green = new_green;
+            new_image[row][col].blue = new_blue;
+        }
+    }
+    return new_image;
+}
 
 //PROCESS 7 - HIGH CONTRAST
 vector<vector<Pixel>> process_7(const vector<vector<Pixel>> &image)
@@ -446,6 +471,35 @@ vector<vector<Pixel>> process_7(const vector<vector<Pixel>> &image)
                 new_green = 0;
                 new_blue = 0;
             }
+
+            new_image[row][col].red = new_red;
+            new_image[row][col].green = new_green;
+            new_image[row][col].blue = new_blue;
+        }
+    }
+    return new_image;
+}
+
+//PROCESS 8 - LIGHTEN IMAGE
+vector<vector<Pixel>> process_8(const vector<vector<Pixel>> &image, double scaling_factor)
+{
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for (int row = 0; row < num_rows; row++)
+    {
+        for (int col = 0; col < num_columns; col++)
+        {
+            int red_color = image[row][col].red;
+            int green_color = image[row][col].green;
+            int blue_color = image[row][col].blue;
+
+            // double scaling_factor = 0.5;
+
+            int new_red = (255 - (255 - red_color) * scaling_factor);
+            int new_green = (255 - (255 - green_color) * scaling_factor);
+            int new_blue = (255 - (255 - blue_color) * scaling_factor);
 
             new_image[row][col].red = new_red;
             new_image[row][col].green = new_green;
@@ -526,10 +580,38 @@ int main()
         vector<vector<Pixel>> new_image = process_5(image, number);
         bool success = write_image("new_sample.bmp", new_image);
     }
+    else if (menu_choice == 6)
+    {
+        cout << "How many times would you like to enlarge the image?" << endl;
+        string enlarge_img;
+        cin >> enlarge_img;
+        stringstream geek(enlarge_img);
+        int scale = 0;
+        geek >> scale;
+        cout << "enlarge scale: " << scale << endl;
+
+        vector<vector<Pixel>> image = read_image(file_name);
+        vector<vector<Pixel>> new_image = process_6(image, scale);
+        bool success = write_image("new_sample.bmp", new_image);
+    }
     else if (menu_choice == 7)
     {
         vector<vector<Pixel>> image = read_image(file_name);
         vector<vector<Pixel>> new_image = process_7(image);
+        bool success = write_image("new_sample.bmp", new_image);
+    }
+    else if (menu_choice == 8)
+    {
+        cout << "How much would you like to lighten the photo?" << endl;
+        string lighten_num;
+        cin >> lighten_num;
+        stringstream geek(lighten_num);
+        double scaling_factor = 0;
+        geek >> scaling_factor;
+        cout << "Scaling Factor: " << scaling_factor << endl;
+
+        vector<vector<Pixel>> image = read_image(file_name);
+        vector<vector<Pixel>> new_image = process_8(image, scaling_factor);
         bool success = write_image("new_sample.bmp", new_image);
     }
 
