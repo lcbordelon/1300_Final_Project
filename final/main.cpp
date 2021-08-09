@@ -14,7 +14,10 @@ PLEASE FILL OUT THIS SECTION PRIOR TO SUBMISSION
     <ANSWER>
 
 - Did you do any optional enhancements? If so, please explain:
-    <ANSWER>
+    No, but below is a list of things I learned/cemented during this project:
+    -Why variable type matters (string to int, int to double, etc)
+    -I need to compile the code after every change and then run the code
+    
 */
 
 #include <iostream>
@@ -22,6 +25,7 @@ PLEASE FILL OUT THIS SECTION PRIOR TO SUBMISSION
 #include <fstream>
 #include <cmath>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -261,9 +265,6 @@ vector<vector<Pixel>> process_1(const vector<vector<Pixel>> &image)
 
             int distance = sqrt(pow((col - num_columns / 2), 2) + pow((row - num_rows / 2), 2));
             double scaling_factor = (num_rows - distance) / double(num_rows);
-            // cout << "num rows " << num_rows << endl;
-            // cout << "distance " << distance << endl;
-            // cout << "scaling Factor " << scaling_factor << endl;
 
             int new_red = red_color * scaling_factor;
             int new_green = green_color * scaling_factor;
@@ -290,11 +291,35 @@ int main()
     cin >> file_name;
     cout << file_name << endl;
 
+    cout << "IMAGE PROCESSING MENU" << endl
+         << "0) Change image (current: " << file_name << ")" << endl
+         << "1) Vignette" << endl
+         << "2) Clarendon" << endl
+         << "3) Grayscale" << endl
+         << "4) Rotate 90 degrees" << endl
+         << "5) Rotate multiple 90 degrees" << endl
+         << "6) Enlarge" << endl
+         << "7) High contrast" << endl
+         << "8) Lighten" << endl
+         << "9) Darken" << endl
+         << "10) Black, white, red, green, blue" << endl;
+
+    cout << "Enter menu selection (Q to quit): " << endl;
+    string menu_number;
+    cin >> menu_number;
+    stringstream geek(menu_number);
+    int menu_choice = 0;
+    geek >> menu_choice;
+    cout << "Menu Choice: " << menu_choice << endl;
+
+    if (menu_choice == 1)
+    {
+        vector<vector<Pixel>> image = read_image(file_name);
+        vector<vector<Pixel>> new_image = process_1(image);
+        bool success = write_image("new_sample.bmp", new_image);
+    }
+
     // Read in BMP image file into a 2D vector (using read_image function)
-    cout << "into the main function.." << endl;
-    vector<vector<Pixel>> image = read_image("sample.bmp");
-    vector<vector<Pixel>> new_image = process_1(image);
-    bool success = write_image("new_sample.bmp", new_image);
 
     // Output modified red and blue pixel image, results
     // cout << "The dimensions of the image are: " << image.rows << " rows by " << image.cols << " columns." << endl;
