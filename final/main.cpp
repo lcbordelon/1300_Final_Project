@@ -17,7 +17,7 @@ PLEASE FILL OUT THIS SECTION PRIOR TO SUBMISSION
     No, but below is a list of things I learned/cemented during this project:
     -Why variable type matters (string to int, int to double, etc)
     -I need to compile the code after every change and then run the code
-    
+
 */
 
 #include <iostream>
@@ -279,6 +279,53 @@ vector<vector<Pixel>> process_1(const vector<vector<Pixel>> &image)
     return new_image;
 }
 
+//PROCESS 2 - CLARENDON
+vector<vector<Pixel>> process_2(const vector<vector<Pixel>> &image, double scaling_factor)
+{
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for (int row = 0; row < num_rows; row++)
+    {
+        for (int col = 0; col < num_columns; col++)
+        {
+            int red_color = image[row][col].red;
+            int green_color = image[row][col].green;
+            int blue_color = image[row][col].blue;
+
+            int average_value = (red_color + green_color + blue_color) / 3;
+            int new_red = 0;
+            int new_green = 0;
+            int new_blue = 0;
+
+            if (average_value >= 170)
+            {
+                new_red = 255 - (255 - red_color) * scaling_factor;
+                new_green = 255 - (255 - green_color) * scaling_factor;
+                new_blue = 255 - (255 - blue_color) * scaling_factor;
+            }
+            else if (average_value < 90)
+            {
+                new_red = red_color * scaling_factor;
+                new_green = green_color * scaling_factor;
+                new_blue = blue_color * scaling_factor;
+            }
+            else
+            {
+                new_red = red_color;
+                new_green = green_color;
+                new_blue = blue_color;
+            }
+
+            new_image[row][col].red = new_red;
+            new_image[row][col].green = new_green;
+            new_image[row][col].blue = new_blue;
+        }
+    }
+    return new_image;
+}
+
 int main()
 {
 
@@ -316,6 +363,12 @@ int main()
     {
         vector<vector<Pixel>> image = read_image(file_name);
         vector<vector<Pixel>> new_image = process_1(image);
+        bool success = write_image("new_sample.bmp", new_image);
+    }
+    else if (menu_choice == 2)
+    {
+        vector<vector<Pixel>> image = read_image(file_name);
+        vector<vector<Pixel>> new_image = process_2(image, 0.3);
         bool success = write_image("new_sample.bmp", new_image);
     }
 
