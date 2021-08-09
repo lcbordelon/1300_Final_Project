@@ -383,6 +383,34 @@ vector<vector<Pixel>> process_4(const vector<vector<Pixel>> &image)
     }
 }
 
+// PROCESS 5 - ROTATE MULTIPLES OF 90 DEGREES
+vector<vector<Pixel>> process_5(const vector<vector<Pixel>> &image, int number)
+{
+    int angle = number * 90;
+    cout << "angle: " << angle << endl;
+    if ((angle % 90) != 0)
+    {
+        cout << "Angle must be a multiple of 90 degrees!" << endl;
+    }
+    else if (angle == 0)
+    {
+        return image;
+    }
+    else if (angle == 90)
+    {
+        return process_4(image);
+    }
+    else if (angle == 180)
+    {
+        return process_4(process_4(image));
+    }
+    else
+    {
+        return process_4(process_4(process_4(image)));
+    }
+    return image;
+}
+
 int main()
 {
 
@@ -438,6 +466,20 @@ int main()
     {
         vector<vector<Pixel>> image = read_image(file_name);
         vector<vector<Pixel>> new_image = process_4(image);
+        bool success = write_image("new_sample.bmp", new_image);
+    }
+    else if (menu_choice == 5)
+    {
+        cout << "How many times would you like to rotate the image 90 degrees?" << endl;
+        string rotate_degrees;
+        cin >> rotate_degrees;
+        stringstream geek(rotate_degrees);
+        int number = 0;
+        geek >> number;
+        cout << "Rotating degrees: " << number << endl;
+
+        vector<vector<Pixel>> image = read_image(file_name);
+        vector<vector<Pixel>> new_image = process_5(image, number);
         bool success = write_image("new_sample.bmp", new_image);
     }
 
